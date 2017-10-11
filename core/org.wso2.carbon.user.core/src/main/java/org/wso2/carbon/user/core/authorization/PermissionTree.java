@@ -27,6 +27,7 @@ import org.wso2.carbon.user.core.UserStoreManager;
 import org.wso2.carbon.user.core.internal.UserStoreMgtDSComponent;
 import org.wso2.carbon.user.core.util.DatabaseUtil;
 import org.wso2.carbon.user.core.util.UserCoreUtil;
+import org.wso2.carbon.utils.xml.StringUtils;
 
 import javax.cache.Cache;
 import javax.cache.CacheManager;
@@ -942,40 +943,7 @@ public class PermissionTree {
      * @throws org.wso2.carbon.user.core.UserStoreException throws if fail to update permission tree from DB
      */
     void updatePermissionTree() throws UserStoreException {
-        Cache<PermissionTreeCacheKey, GhostResource<TreeNode>> permissionCache = this.getPermissionTreeCache();
-        if (permissionCache != null) {
-            PermissionTreeCacheKey cacheKey = new PermissionTreeCacheKey(cacheIdentifier, tenantId);
-            GhostResource<TreeNode> cacheEntry = (GhostResource<TreeNode>) permissionCache.get(cacheKey);
-            if (permissionCache.containsKey(cacheKey) && cacheEntry != null) {
-                if (cacheEntry.getResource() == null) {
-                    synchronized (this) {
-                        cacheEntry = (GhostResource<TreeNode>) permissionCache.get(cacheKey);
-                        if (cacheEntry == null || cacheEntry.getResource() == null) {
-                            updatePermissionTreeFromDB();
-                            if (cacheEntry == null) {
-                                cacheEntry = new GhostResource<TreeNode>(root);
-                                permissionCache.put(cacheKey, cacheEntry);
-                            } else {
-                                cacheEntry.setResource(root);
-                            }
-                            if (log.isDebugEnabled()) {
-                                log.debug("Set resource to true");
-                            }
-                        }
-                    }
-                }
-            } else {
-                synchronized (this) {
-                    updatePermissionTreeFromDB();
-                    cacheKey = new PermissionTreeCacheKey(cacheIdentifier, tenantId);
-                    cacheEntry = new GhostResource<TreeNode>(root);
-                    permissionCache.put(cacheKey, cacheEntry);
-                    if (log.isDebugEnabled()) {
-                        log.debug("Loaded from database");
-                    }
-                }
-            }
-        }
+        updatePermissionTree("");
     }
 
     /**
@@ -1008,8 +976,10 @@ public class PermissionTree {
                         }
                     }
                 } else {
-                    //If permission tree is cached, only update the permissions of given resource path
-                    updateResourcePermissionsById(resourceId);
+                    if(!StringUtils.isEmpty(resourceId)) {
+                        //If permission tree is cached, only update the permissions of given resource path
+                        updateResourcePermissionsById(resourceId);
+                    }
                 }
             } else {
                 synchronized (this) {
