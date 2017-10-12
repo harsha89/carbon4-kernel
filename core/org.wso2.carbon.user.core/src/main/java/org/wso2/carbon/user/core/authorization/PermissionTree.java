@@ -947,8 +947,8 @@ public class PermissionTree {
     }
 
     /**
-     * update permission tree from database for given resource id if permission tree is already cached
-     * If permission tree isn't cached, then this method will load full permission tree
+     * Update permission tree from database for a given resource id if permission tree is already cached.
+     * If permission tree isn't cached, then this method will load full permission tree.
      *
      * @param resourceId registry resource path
      * @throws org.wso2.carbon.user.core.UserStoreException throws if fail to update permission tree from DB
