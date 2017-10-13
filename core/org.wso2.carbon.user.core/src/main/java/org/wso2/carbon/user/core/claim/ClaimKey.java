@@ -22,9 +22,7 @@ import java.io.Serializable;
 
 /**
  * Unique key to represent a claim across the dialect.
- *
  */
-
 public class ClaimKey implements Serializable{
     private static final long serialVersionUID = -2002899750350065724L;
     private String claimUri;
@@ -62,9 +60,7 @@ public class ClaimKey implements Serializable{
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         ClaimKey that = (ClaimKey) o;
-
         if (!claimUri.equals(that.claimUri)) {
             return false;
         }
