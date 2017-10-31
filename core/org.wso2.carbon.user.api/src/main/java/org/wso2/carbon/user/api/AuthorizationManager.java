@@ -235,7 +235,7 @@ public interface AuthorizationManager {
             throws UserStoreException;
 
     /**
-     * This method used to refresh the existing resource permissions which cached in the memory
+     * This method used to refresh the existing resource permissions which cached in the memory.
      *
      * @param resourceId resource id path
      * @throws UserStoreException if something went wrong

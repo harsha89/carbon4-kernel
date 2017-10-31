@@ -994,8 +994,9 @@ public class PermissionTree {
             }
         }
     }
+
     /**
-     * update permission tree from cache
+     * Update permission tree from cache.
      *
      * @throws org.wso2.carbon.user.core.UserStoreException throws if fail to update permission tree from DB
      */
